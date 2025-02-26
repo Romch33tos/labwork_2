@@ -15,10 +15,49 @@ public class Document
     }
 }
 
+public class WordDocument : Document
+{
+    public int WordCount { get; set; }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo() + $", Word Count: {WordCount}";
+    }
+}
+
+public class DocumentManager
+{
+    private static DocumentManager _instance;
+
+    private DocumentManager() { }
+
+    public static DocumentManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new DocumentManager();
+            }
+            return _instance;
+        }
+    }
+
+    public List<Document> documents = new List<Document>(); 
+
+    public void AddDocument(Document document)
+    {
+        documents.Add(document);
+    }
+}
 class Program
 {
     static void Main(string[] args)
     {
+        DocumentManager manager = DocumentManager.Instance;
+
+        manager.AddDocument(new WordDocument { Name = "Doc1", Author = "Author1", Keywords = "Keyword1", Theme = "Theme1", FilePath = "C:\\Docs\\Doc1.docx", WordCount = 500 });
+        
         string choice;
         while (true)
         {
@@ -30,11 +69,10 @@ class Program
             Console.WriteLine("5 - HTML");
             Console.WriteLine("0 - Выход");
             choice = Console.ReadLine();
-
             switch (choice)
             {
                 case "1":
-                    Console.WriteLine("1");
+                    Console.WriteLine(manager.documents[0].GetInfo());
                     break;
                 case "2":
                     Console.WriteLine("2");
