@@ -25,6 +25,46 @@ public class WordDocument : Document
     }
 }
 
+public class PdfDocument : Document
+{
+    public string PdfVersion { get; set; }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo() + $", PDF Version: {PdfVersion}";
+    }
+}
+
+public class ExcelDocument : Document
+{
+    public int SheetCount { get; set; }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo() + $", Sheet Count: {SheetCount}";
+    }
+}
+
+public class TxtDocument : Document
+{
+    public string Title { get; set; }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo() + $", Title: {Title}";
+    }
+}
+
+public class HtmlDocument : Document
+{
+    public string Encoding { get; set; }
+
+    public override string GetInfo()
+    {
+        return base.GetInfo() + $", Encoding: {Encoding}";
+    }
+}
+
 public class DocumentManager
 {
     private static DocumentManager _instance;
@@ -57,7 +97,11 @@ class Program
         DocumentManager manager = DocumentManager.Instance;
 
         manager.AddDocument(new WordDocument { Name = "Doc1", Author = "Author1", Keywords = "Keyword1", Theme = "Theme1", FilePath = "C:\\Docs\\Doc1.docx", WordCount = 500 });
-        
+        manager.AddDocument(new PdfDocument { Name = "Doc2", Author = "Author2", Keywords = "Keyword2", Theme = "Theme2", FilePath = "C:\\Docs\\Doc2.pdf", PdfVersion = "1.7" });
+        manager.AddDocument(new ExcelDocument { Name = "Doc3", Author = "Author3", Keywords = "Keyword3", Theme = "Theme3", FilePath = "C:\\Docs\\Doc3.xlsx", SheetCount = 2220 });
+        manager.AddDocument(new TxtDocument { Name = "Doc4", Author = "Author4", Keywords = "Keyword4", Theme = "Theme4", FilePath = "C:\\Docs\\Doc4.txt", Title = "Текстовый документ" });
+        manager.AddDocument(new HtmlDocument { Name = "Doc5", Author = "Author5", Keywords = "Keyword5", Theme = "Theme5", FilePath = "C:\\Docs\\Doc5.html", Encoding = "UTF-8" });
+
         string choice;
         while (true)
         {
@@ -75,16 +119,16 @@ class Program
                     Console.WriteLine(manager.documents[0].GetInfo());
                     break;
                 case "2":
-                    Console.WriteLine("2");
+                    Console.WriteLine(manager.documents[1].GetInfo());
                     break;
                 case "3":
-                    Console.WriteLine("3");
+                    Console.WriteLine(manager.documents[2].GetInfo());
                     break;
                 case "4":
-                    Console.WriteLine("4");
+                    Console.WriteLine(manager.documents[3].GetInfo());
                     break;
                 case "5":
-                    Console.WriteLine("5");
+                    Console.WriteLine(manager.documents[4].GetInfo());
                     break;
                 case "0":
                     return;
