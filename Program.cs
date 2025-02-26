@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 public class Document
-{
+{  
     public string Name { get; set; }
     public string Author { get; set; }
     public string Keywords { get; set; }
@@ -90,6 +90,7 @@ public class DocumentManager
         documents.Add(document);
     }
 }
+
 class Program
 {
     static void Main(string[] args)
