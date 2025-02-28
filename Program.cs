@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 public class Document
 {  
-    public string Name { get; set; }
-    public string Author { get; set; }
-    public string Keywords { get; set; }
-    public string Theme { get; set; }
-    public string FilePath { get; set; }
+  public string Name { get; set; }
+  public string Author { get; set; }
+  public string Keywords { get; set; }
+  public string Theme { get; set; }
+  public string FilePath { get; set; }
 
-    public virtual string GetInfo()
-    {
-        return $"Name: {Name}, Author: {Author}, Keywords: {Keywords}, Theme: {Theme}, FilePath: {FilePath}";
-    }
+  public virtual string GetInfo()
+  {
+    return $"Название документа: {Name}, Автор: {Author}, Ключевые слова: {Keywords}, Тема: {Theme}, Путь к файлу: {FilePath}";
+  }
 }
 
 public class WordDocument : Document
@@ -21,38 +21,38 @@ public class WordDocument : Document
 
     public override string GetInfo()
     {
-        return base.GetInfo() + $", Word Count: {WordCount}";
+      return base.GetInfo() + $", Число слов: {WordCount}";
     }
 }
 
 public class PdfDocument : Document
 {
-    public string PdfVersion { get; set; }
+  public string PdfVersion { get; set; }
 
-    public override string GetInfo()
-    {
-        return base.GetInfo() + $", PDF Version: {PdfVersion}";
-    }
+  public override string GetInfo()
+  {
+    return base.GetInfo() + $", Версия PDF: {PdfVersion}";
+  }
 }
 
 public class ExcelDocument : Document
 {
-    public int SheetCount { get; set; }
+  public int SheetCount { get; set; }
 
-    public override string GetInfo()
-    {
-        return base.GetInfo() + $", Sheet Count: {SheetCount}";
-    }
+  public override string GetInfo()
+  {
+    return base.GetInfo() + $", Число листов: {SheetCount}";
+  }
 }
 
 public class TxtDocument : Document
 {
-    public string Title { get; set; }
+  public string Title { get; set; }
 
-    public override string GetInfo()
-    {
-        return base.GetInfo() + $", Title: {Title}";
-    }
+  public override string GetInfo()
+  {
+    return base.GetInfo() + $", Заголовок: {Title}";
+  }
 }
 
 public class HtmlDocument : Document
@@ -61,25 +61,25 @@ public class HtmlDocument : Document
 
     public override string GetInfo()
     {
-        return base.GetInfo() + $", Encoding: {Encoding}";
+      return base.GetInfo() + $", Кодировка файла: {Encoding}";
     }
 }
 
 public class DocumentManager
 {
-    private static DocumentManager _instance;
+  private static DocumentManager _instance;
 
-    private DocumentManager() { }
+  private DocumentManager() { }
 
-    public static DocumentManager Instance
-    {
-        get
+  public static DocumentManager Instance
+  {
+    get
+      {
+        if (_instance == null)
         {
-            if (_instance == null)
-            {
-                _instance = new DocumentManager();
-            }
-            return _instance;
+          _instance = new DocumentManager();
+        }
+          return _instance;
         }
     }
 
@@ -87,56 +87,56 @@ public class DocumentManager
 
     public void AddDocument(Document document)
     {
-        documents.Add(document);
+      documents.Add(document);
     }
 }
 
 class Program
 {
-    static void Main(string[] args)
+  static void Main(string[] args)
+  {
+    DocumentManager manager = DocumentManager.Instance;
+      
+    manager.AddDocument(new WordDocument { Name = "Отчет", Author = "Romch33tos", Keywords = "Программирование", Theme = "Тема 1", FilePath = "C:\\Docs\\Отчет.docx", WordCount = 2220 });
+    manager.AddDocument(new PdfDocument { Name = "Методическое пособие", Author = "Romcheetos", Keywords = "Паттерн", Theme = "Тема 2", FilePath = "C:\\Docs\\Методическое_пособие.pdf", PdfVersion = "1.7" });
+    manager.AddDocument(new ExcelDocument { Name = "Таблица тимлидов", Author = "Romch33tos", Keywords = "Тимлид", Theme = "Тема 3", FilePath = "C:\\Docs\\Таблица_тимлидов.xlsx", SheetCount = 27 });
+    manager.AddDocument(new TxtDocument { Name = "Заметки", Author = "Romch33tos", Keywords = "Дневник", Theme = "Тема 4", FilePath = "C:\\Docs\\Заметки.txt", Title = "Текстовый документ" });
+    manager.AddDocument(new HtmlDocument { Name = "Страница", Author = "Romcheetos", Keywords = "Разметка", Theme = "Тема 5", FilePath = "C:\\Docs\\Страница.html", Encoding = "UTF-8" });
+
+    string choice;
+    while (true)
     {
-        DocumentManager manager = DocumentManager.Instance;
-
-        manager.AddDocument(new WordDocument { Name = "Doc1", Author = "Author1", Keywords = "Keyword1", Theme = "Theme1", FilePath = "C:\\Docs\\Doc1.docx", WordCount = 500 });
-        manager.AddDocument(new PdfDocument { Name = "Doc2", Author = "Author2", Keywords = "Keyword2", Theme = "Theme2", FilePath = "C:\\Docs\\Doc2.pdf", PdfVersion = "1.7" });
-        manager.AddDocument(new ExcelDocument { Name = "Doc3", Author = "Author3", Keywords = "Keyword3", Theme = "Theme3", FilePath = "C:\\Docs\\Doc3.xlsx", SheetCount = 2220 });
-        manager.AddDocument(new TxtDocument { Name = "Doc4", Author = "Author4", Keywords = "Keyword4", Theme = "Theme4", FilePath = "C:\\Docs\\Doc4.txt", Title = "Текстовый документ" });
-        manager.AddDocument(new HtmlDocument { Name = "Doc5", Author = "Author5", Keywords = "Keyword5", Theme = "Theme5", FilePath = "C:\\Docs\\Doc5.html", Encoding = "UTF-8" });
-
-        string choice;
-        while (true)
-        {
-            Console.WriteLine("Выберите номер документа:");
-            Console.WriteLine("1 - Word");
-            Console.WriteLine("2 - PDF");
-            Console.WriteLine("3 - Excel");
-            Console.WriteLine("4 - TXT");
-            Console.WriteLine("5 - HTML");
-            Console.WriteLine("0 - Выход");
-            choice = Console.ReadLine();
-            switch (choice)
-            {
-                case "1":
-                    Console.WriteLine(manager.documents[0].GetInfo());
-                    break;
-                case "2":
-                    Console.WriteLine(manager.documents[1].GetInfo());
-                    break;
-                case "3":
-                    Console.WriteLine(manager.documents[2].GetInfo());
-                    break;
-                case "4":
-                    Console.WriteLine(manager.documents[3].GetInfo());
-                    break;
-                case "5":
-                    Console.WriteLine(manager.documents[4].GetInfo());
-                    break;
-                case "0":
-                    return;
-                default:
-                    Console.WriteLine("Некорректная команда!");
-                    break;
-            }
-        }
+      Console.WriteLine("Выберите номер документа:");
+      Console.WriteLine("1 - Word");
+      Console.WriteLine("2 - PDF");
+      Console.WriteLine("3 - Excel");
+      Console.WriteLine("4 - TXT");
+      Console.WriteLine("5 - HTML");
+      Console.WriteLine("0 - Выход");
+      choice = Console.ReadLine();
+      switch (choice)
+      {
+        case "1":
+          Console.WriteLine(manager.documents[0].GetInfo());
+          break;
+        case "2":
+          Console.WriteLine(manager.documents[1].GetInfo());
+          break;
+        case "3":
+          Console.WriteLine(manager.documents[2].GetInfo());
+          break;
+        case "4":
+          Console.WriteLine(manager.documents[3].GetInfo());
+          break;
+        case "5":
+          Console.WriteLine(manager.documents[4].GetInfo());
+          break;
+        case "0":
+          return;
+        default:
+          Console.WriteLine("Некорректная команда!");
+          break;
+      }
     }
+  }
 }
