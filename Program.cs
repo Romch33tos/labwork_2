@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 public class Document
@@ -17,12 +17,12 @@ public class Document
 
 public class WordDocument : Document
 {
-    public int WordCount { get; set; }
+  public int WordCount { get; set; }
 
-    public override string GetInfo()
-    {
-      return base.GetInfo() + $", Число слов: {WordCount}";
-    }
+  public override string GetInfo()
+  {
+    return base.GetInfo() + $", Число слов: {WordCount}";
+  }
 }
 
 public class PdfDocument : Document
@@ -57,12 +57,12 @@ public class TxtDocument : Document
 
 public class HtmlDocument : Document
 {
-    public string Encoding { get; set; }
+  public string Encoding { get; set; }
 
-    public override string GetInfo()
-    {
-      return base.GetInfo() + $", Кодировка файла: {Encoding}";
-    }
+  public override string GetInfo()
+  {
+    return base.GetInfo() + $", Кодировка файла: {Encoding}";
+  }
 }
 
 public class DocumentManager
@@ -74,21 +74,81 @@ public class DocumentManager
   public static DocumentManager Instance
   {
     get
-      {
-        if (_instance == null)
-        {
-          _instance = new DocumentManager();
-        }
-          return _instance;
-        }
-    }
-
-    public List<Document> documents = new List<Document>(); 
-
-    public void AddDocument(Document document)
     {
-      documents.Add(document);
+      if (_instance == null)
+      {
+        _instance = new DocumentManager();
+      }
+        return _instance;
     }
+  }
+
+  public List<Document> documents = new List<Document>(); 
+
+  public void AddDocument(Document document)
+  {
+    documents.Add(document);
+  }
+}
+
+public class Menu
+{
+  private static Menu _instance;
+
+  private Menu() { }
+
+  public static Menu Instance
+  {
+    get
+    {
+      if (_instance == null)
+      {
+        _instance = new Menu();
+      }
+      return _instance;
+    }
+}
+
+public void DisplayMenu()
+{
+  Console.WriteLine("Выберите номер документа:");
+  Console.WriteLine("1 - Word");
+  Console.WriteLine("2 - PDF");
+  Console.WriteLine("3 - Excel");
+  Console.WriteLine("4 - TXT");
+  Console.WriteLine("5 - HTML");
+  Console.WriteLine("0 - Выход");
+}
+
+public void ExecuteChoice(string choice)
+{
+  DocumentManager manager = DocumentManager.Instance;
+
+  switch (choice)
+  {
+    case "1":
+      Console.WriteLine(manager.documents[0].GetInfo());
+      break;
+    case "2":
+      Console.WriteLine(manager.documents[1].GetInfo());
+      break;
+    case "3":
+      Console.WriteLine(manager.documents[2].GetInfo());
+      break;
+    case "4":
+      Console.WriteLine(manager.documents[3].GetInfo());
+      break;
+    case "5":
+      Console.WriteLine(manager.documents[4].GetInfo());
+      break;
+    case "0":
+      Environment.Exit(0);
+      break;
+    default:
+      Console.WriteLine("Некорректная команда!");
+      break;
+   }
+  }
 }
 
 class Program
@@ -96,47 +156,20 @@ class Program
   static void Main(string[] args)
   {
     DocumentManager manager = DocumentManager.Instance;
-      
+        
     manager.AddDocument(new WordDocument { Name = "Отчет", Author = "Romch33tos", Keywords = "Программирование", Theme = "Тема 1", FilePath = "C:\\Docs\\Отчет.docx", WordCount = 2220 });
     manager.AddDocument(new PdfDocument { Name = "Методическое пособие", Author = "Romcheetos", Keywords = "Паттерн", Theme = "Тема 2", FilePath = "C:\\Docs\\Методическое_пособие.pdf", PdfVersion = "1.7" });
     manager.AddDocument(new ExcelDocument { Name = "Таблица тимлидов", Author = "Romch33tos", Keywords = "Тимлид", Theme = "Тема 3", FilePath = "C:\\Docs\\Таблица_тимлидов.xlsx", SheetCount = 27 });
     manager.AddDocument(new TxtDocument { Name = "Заметки", Author = "Romch33tos", Keywords = "Дневник", Theme = "Тема 4", FilePath = "C:\\Docs\\Заметки.txt", Title = "Текстовый документ" });
     manager.AddDocument(new HtmlDocument { Name = "Страница", Author = "Romcheetos", Keywords = "Разметка", Theme = "Тема 5", FilePath = "C:\\Docs\\Страница.html", Encoding = "UTF-8" });
 
-    string choice;
+    Menu menu = Menu.Instance;
+
     while (true)
     {
-      Console.WriteLine("Выберите номер документа:");
-      Console.WriteLine("1 - Word");
-      Console.WriteLine("2 - PDF");
-      Console.WriteLine("3 - Excel");
-      Console.WriteLine("4 - TXT");
-      Console.WriteLine("5 - HTML");
-      Console.WriteLine("0 - Выход");
-      choice = Console.ReadLine();
-      switch (choice)
-      {
-        case "1":
-          Console.WriteLine(manager.documents[0].GetInfo());
-          break;
-        case "2":
-          Console.WriteLine(manager.documents[1].GetInfo());
-          break;
-        case "3":
-          Console.WriteLine(manager.documents[2].GetInfo());
-          break;
-        case "4":
-          Console.WriteLine(manager.documents[3].GetInfo());
-          break;
-        case "5":
-          Console.WriteLine(manager.documents[4].GetInfo());
-          break;
-        case "0":
-          return;
-        default:
-          Console.WriteLine("Некорректная команда!");
-          break;
-      }
+      menu.DisplayMenu();
+      string choice = Console.ReadLine();
+      menu.ExecuteChoice(choice);
     }
   }
 }
